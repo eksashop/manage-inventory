@@ -1,16 +1,22 @@
-FROM node:18-alpine AS node_builder
+FROM node:20-alpine AS node_builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM composer:2.6 AS composer_builder
+FROM php:8.4-cli-alpine AS composer_builder
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 WORKDIR /app
 COPY composer.json composer.lock ./
+
 RUN composer install --no-dev --ignore-platform-reqs --no-scripts --prefer-dist
+
 COPY . .
-RUN composer dump-autoload --optimize
+
+RUN composer dump-autoload --optimize --no-scripts
 
 FROM php:8.4-fpm-alpine
 
