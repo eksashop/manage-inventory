@@ -12,7 +12,7 @@ RUN composer install --no-dev --ignore-platform-reqs --no-scripts --prefer-dist
 COPY . .
 RUN composer dump-autoload --optimize
 
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 RUN apk add --no-cache nginx supervisor \
     && docker-php-ext-install pdo pdo_mysql opcache \
