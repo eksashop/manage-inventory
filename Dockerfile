@@ -20,8 +20,11 @@ RUN composer dump-autoload --optimize --no-scripts
 
 FROM php:8.4-fpm-alpine
 
-RUN apk add --no-cache nginx supervisor \
+RUN apk add --no-cache nginx supervisor autoconf g++ make linux-headers openssl-dev curl-dev \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb \
     && docker-php-ext-install pdo pdo_mysql opcache \
+    && apk del autoconf g++ make linux-headers \
     && mkdir -p /run/nginx
 
 WORKDIR /var/www/html
