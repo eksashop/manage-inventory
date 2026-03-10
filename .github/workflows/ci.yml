@@ -1,0 +1,53 @@
+name: Manage Inventory CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Kode
+      uses: actions/checkout@v4
+
+    - name: Setup PHP 8.2
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, libxml, pdo
+        coverage: none
+
+    - name: Setup Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Siapkan Environment Variable
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Install Dependensi Composer
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    - name: Generate Application Key
+      run: php artisan key:generate
+
+    - name: Install Dependensi NPM & Build Aset (Vite)
+      run: |
+        npm ci
+        npm run build
+
+    - name: Siapkan Database SQLite untuk Testing
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
+
+    - name: Jalankan Pengujian (PHPUnit)
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: php artisan test

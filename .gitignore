@@ -1,0 +1,35 @@
+# Environment & Secrets
+.env
+.env.backup
+.env.production
+/auth.json
+/storage/*.key
+
+# Dependencies
+/node_modules
+/vendor
+
+# Build & Public (Vite & Assets)
+/public/build
+/public/hot
+/public/storage
+
+# Storage, Logs & Caches
+/storage/pail
+*.log
+.phpunit.result.cache
+/.phpunit.cache
+
+# IDE, Editor & Tools Settings
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+.phpactor.json
+Homestead.json
+Homestead.yaml
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
