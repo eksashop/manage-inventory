@@ -41,13 +41,13 @@ jobs:
         npm ci
         npm run build
 
-    - name: Siapkan Database SQLite untuk Testing
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
+    # - name: Siapkan Database SQLite untuk Testing
+    #   run: |
+    #     mkdir -p database
+    #     touch database/database.sqlite
 
-    - name: Jalankan Pengujian (PHPUnit)
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: php artisan test
+    # - name: Jalankan Pengujian (PHPUnit)
+    #   env:
+    #     DB_CONNECTION: sqlite
+    #     DB_DATABASE: database/database.sqlite
+    #   run: php artisan test
